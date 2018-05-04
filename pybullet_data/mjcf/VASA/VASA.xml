@@ -1,0 +1,152 @@
+<mujoco model="VASA">
+	<compiler inertiafromgeom='true' angle='degree'/>
+
+	 <default>
+        <joint limited='true' damping='0.001' armature='0.001' type='hinge' pos='0 0 0'/>
+        <geom contype='1' conaffinity='1' condim='3' rgba='0.8 0.6 .4 1' margin="0" solref=".02 1" solimp=".8 .8 .01" material="geom" type="mesh"/>
+        <position ctrllimited='true'/>
+    </default>
+
+    <option timestep='0.002' iterations="50" tolerance="1e-10" solver="Newton" jacobian="dense" cone="elliptic"/>
+    <size nstack="1000000"/>
+
+    <visual>
+        <map fogstart="3" fogend="5" force="0.1" znear="0.5"/>
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" width="128" height="128" rgb1=".4 .6 .8" rgb2="0 0 0"/>  
+        <texture name="texgeom" type="cube" builtin="flat" mark="cross" width="127" height="1278" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+        <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512"/>  
+        <material name='MatPlane' reflectance='0.3' texture="texplane" texrepeat="1 1" texuniform="true"/>
+        <material name='geom' texture="texgeom" texuniform="true"/>
+        <mesh file="calf_p.stl" name="calf_p"></mesh>
+        <mesh file="calf_p_.stl" name="calf_p_"></mesh>
+        <mesh file="disc_y.stl" name="disc_y"></mesh>
+        <mesh file="farm_p.stl" name="farm_p"></mesh>
+        <mesh file="foot_p.stl" name="foot_p"></mesh>
+        <mesh file="foot_p_.stl" name="foot_p_"></mesh>
+        <mesh file="foot_r.stl" name="foot_r"></mesh>
+        <mesh file="foot_r_.stl" name="foot_r_"></mesh>
+        <mesh file="head_y.stl" name="head_y"></mesh>
+        <mesh file="spine_p.stl" name="spine_p"></mesh>
+        <mesh file="thigh_p.stl" name="thigh_p"></mesh>
+        <mesh file="thigh_p_.stl" name="thigh_p_"></mesh>
+        <mesh file="thigh_r.stl" name="thigh_r"></mesh>
+        <mesh file="thigh_r_.stl" name="thigh_r_"></mesh>
+        <mesh file="thigh_y.stl" name="thigh_y"></mesh>
+        <mesh file="thigh_y_.stl" name="thigh_y_"></mesh>
+        <mesh file="uarm_p.stl" name="uarm_p"></mesh>
+        <mesh file="uarm_p_.stl" name="uarm_p_"></mesh>
+        <mesh file="uarm_r.stl" name="uarm_r"></mesh>
+    </asset>
+
+    <worldbody>
+    	<geom name='floor' pos='0 0 0' size='5 5 1' type='plane' material="MatPlane"/>
+		<body name='spine' pos='0 0 1'>
+            <geom name='spine' type='mesh' mesh='spine_p' density='2000'></geom>
+            <body name='pelvis' pos='0 0 0'>
+            	<geom name='pelvis' type='mesh' mesh='disc_y'></geom>
+            	<joint name='01' type='hinge' axis='1 0 0' range='-95 0'></joint>
+            	<body name='Lthigh_z' pos='.02378 .048992 -.018013'>
+            		<geom name='Lthigh_z' type='mesh' mesh='thigh_y_'></geom>
+            		<joint name='15' type='hinge' axis='0 0 1' range='-30 150'></joint>
+            		<body name='Lthigh_y' pos='-.004233 0 -.026548'>
+            			<geom name='Lthigh_y' type='mesh' mesh='thigh_r'></geom>
+            			<joint name='17' type='hinge' axis='0 1 0' range='-90 90'></joint>
+            			<body name='Lthigh_x' pos='0 -.032934 -.001997'>
+            				<geom name='Lthigh_x' type='mesh' mesh='thigh_p'></geom>
+            				<joint name='16' type='hinge' axis='-1 0 0' range='-40 120'></joint>
+            				<body name='Lcalf' pos='0 .00038 -.0467'>
+            					<geom name='Lcalf' type='mesh' mesh='calf_p'></geom>
+            					<joint name='18' type='hinge' axis='-1 0 0' range='-130 0'></joint>
+            					<body name='Lfoot_x' pos='0 -.00015 -.0575'>
+            						<geom name='Lfoot_x' type='mesh' mesh='foot_p'></geom>
+            						<joint name='19' type='hinge' axis='-1 0 0' range='-60 95'></joint>
+            						<body name='Lfoot_y' pos='.0016 .0005 -.0001'>
+            							<geom name='Lfoot_y' type='mesh' mesh='foot_r_'></geom>
+            							<joint name='20' type='hinge' axis='0 1 0' range='-90 45'></joint>
+            						</body>
+            					</body>
+            				</body>
+            			</body>
+            		</body>
+            	</body>
+            	<body name='Rthigh_z' pos='-.02378 .048992 -.018013'>
+            		<geom name='Rthigh_z' type='mesh' mesh='thigh_y'></geom>
+            		<joint name='09' type='hinge' axis='0 0 -1' range='-30 150'></joint>
+            		<body name='Rthigh_y' pos='.004233 0 -.026548'>
+            			<geom name='Rthigh_y' type='mesh' mesh='thigh_r_'></geom>
+            			<joint name='11' type='hinge' axis='0 -1 0' range='-90 90'></joint>
+            			<body name='Rthigh_x' pos='0 -.032934 -.001997'>
+            				<geom name='Rthigh_x' type='mesh' mesh='thigh_p_'></geom>
+            				<joint name='10' type='hinge' axis='-1 0 0' range='-40 120'></joint>
+            				<body name='Rcalf' pos='0 .00038 -.0467'>
+            					<geom name='Rcalf' type='mesh' mesh='calf_p_'></geom>
+            					<joint name='12' type='hinge' axis='-1 0 0' range='-130 0'></joint>
+            					<body name='Rfoot_x' pos='0 -.00015 -.0575'>
+            						<geom name='Rfoot_x' type='mesh' mesh='foot_p_'></geom>
+            						<joint name='13' type='hinge' axis='-1 0 0' range='-60 95'></joint>
+            						<body name='Rfoot_y' pos='-.0016 .0005 -.0001'>
+            							<geom name='Rfoot_y' type='mesh' mesh='foot_r'></geom>
+            							<joint name='14' type='hinge' axis='0 -1 0' range='-90 45'></joint>
+            						</body>
+            					</body>
+            				</body>
+            			</body>
+            		</body>
+            	</body>
+            </body>
+            <body name='head' pos='0 .015 .055'>
+            	<geom name='head' type='mesh' mesh='head_y'></geom>
+            	<joint name='02' type='hinge' axis='0 0 1' range='-50 50'></joint>
+            </body>
+            <body name='Lshoulder' pos='.04275 .014979 .0413'>
+            	<geom name='Lshoulder' type='mesh' mesh='uarm_p_'></geom>
+            	<joint name='06' type='hinge' axis='-1 0 0' range='-150 150'></joint>
+            	<body name='Larm' pos='.024273 0 -.008337'>
+            		<geom name='Larm' type='mesh' mesh='uarm_r'></geom>
+            		<joint name='07' type='hinge' axis='0 -1 0' range='-40 150'></joint>
+            		<body name='Lfarm' pos='0 -.01208 -.0487'>
+            			<geom name='Lfarm' type='mesh' mesh='farm_p'></geom>
+            			<joint name='08' type='hinge' axis='-1 0 0' range='-50 130'></joint>
+            		</body>
+            	</body>
+            </body>
+            <body name='Rshoulder' pos='-.04275 .014979 .0413'>
+            	<geom name='Rshoulder' type='mesh' mesh='uarm_p'></geom>
+            	<joint name='03' type='hinge' axis='-1 0 0' range='-150 150'></joint>
+            	<body name='Rarm' pos='-.024273 0 -.008337'>
+            		<geom name='Rarm' type='mesh' mesh='uarm_r'></geom>
+            		<joint name='04' type='hinge' axis='0 1 0' range='-40 150'></joint>
+            		<body name='Rfarm' pos='0 -.01208 -.0487'>
+            			<geom name='Rfarm' type='mesh' mesh='farm_p'></geom>
+            			<joint name='05' type='hinge' axis='-1 0 0' range='-50 130'></joint>
+            		</body>
+            	</body>
+            </body>
+        </body>
+    </worldbody>
+	<actuator>
+		<position name='001' joint='01' kp='50' ctrlrange='-1.66 0'></position>
+		<position name='002' joint='02' kp='50' ctrlrange='-0.87 0.87'></position>
+		<position name='003' joint='03' kp='50' ctrlrange='-2.62 2.62'></position>
+		<position name='004' joint='04' kp='50' ctrlrange='-0.70 2.62'></position>
+		<position name='005' joint='05' kp='50' ctrlrange='-0.87 2.27'></position>
+		<position name='006' joint='06' kp='50' ctrlrange='-2.62 2.62'></position>
+		<position name='007' joint='07' kp='50' ctrlrange='-0.70 2.62'></position>
+		<position name='008' joint='08' kp='50' ctrlrange='-0.87 2.27'></position>
+		<position name='009' joint='09' kp='50' ctrlrange='-0.52 2.62'></position>
+		<position name='010' joint='10' kp='70' ctrlrange='-0.70 2.09'></position>
+		<position name='011' joint='11' kp='70' ctrlrange='-1.57 1.57'></position>
+		<position name='012' joint='12' kp='70' ctrlrange='-2.27 0'></position>
+		<position name='013' joint='13' kp='70' ctrlrange='-1.05 1.66'></position>
+		<position name='014' joint='14' kp='70' ctrlrange='-1.57 0.79'></position>
+		<position name='015' joint='15' kp='70' ctrlrange='-0.52 2.62'></position>
+		<position name='016' joint='16' kp='70' ctrlrange='-0.70 2.09'></position>
+		<position name='017' joint='17' kp='70' ctrlrange='-1.57 1.57'></position>
+		<position name='018' joint='18' kp='70' ctrlrange='-2.27 0'></position>
+		<position name='019' joint='19' kp='70' ctrlrange='-1.05 1.66'></position>
+		<position name='020' joint='20' kp='70' ctrlrange='-1.57 0.79'></position>
+	</actuator>
+</mujoco>
